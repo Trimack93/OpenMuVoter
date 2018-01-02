@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenMuVoter.Utilities;
 using OpenMuVoter.Interfaces.Outputs;
+using OpenMuVoter.Outputs;
 
 namespace OpenMuVoter
 {
@@ -55,11 +56,7 @@ namespace OpenMuVoter
                 Claim24hReward();
             }
             else
-            {
-                _output.WriteLine("Wrong username/password.");
-
                 throw new ArgumentException("Wrong username/password.");
-            }
         }
 
         /// <summary>
@@ -68,6 +65,9 @@ namespace OpenMuVoter
         public void Finish()
         {
             _output.WriteLine("Voting finished successfully!");
+
+            if (_output is ConsoleOutput)
+                _output.ReadLine();
         }
 
         private void VoteOnSites()

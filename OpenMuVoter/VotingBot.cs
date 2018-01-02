@@ -12,6 +12,7 @@ namespace OpenMuVoter
 {
     internal class VotingBot
     {
+        private const int VOTE_TIMEOUT_MS = 250;
         private const string VOTE_URL = "http://openmu.com/?p=votesys";
 
         private IList<string> _siteUrls = new List<string>();
@@ -72,7 +73,7 @@ namespace OpenMuVoter
         {
             string url = Properties.Resources.WebshopVote_URL;
 
-            return Vote(url, "votenew.jpg");
+            return !Vote(url, "Already voted! You can win new 25 credits After:");
         }
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace OpenMuVoter
 
             if (indexBegin != -1)
             {
-                string prize = result.Substring(indexBegin, result.Length - indexEnd);
+                string prize = result.Substring(indexBegin, indexEnd - indexBegin);
 
                 return prize;
             }
@@ -124,7 +125,7 @@ namespace OpenMuVoter
             HttpWebRequest request = HttpHelper.CreateRequest(url);
             string result = HttpHelper.ReadResponse(request);
 
-            Thread.Sleep(500);                                     // coby za bota nie uznali xD
+            Thread.Sleep(VOTE_TIMEOUT_MS);                                     // coby za bota nie uznali xD
 
             return result.Contains(validResponse);
         }

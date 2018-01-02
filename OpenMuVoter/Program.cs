@@ -32,6 +32,7 @@ namespace OpenMuVoter
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
+                Console.WriteLine(ex.Message);
             }
         }
 
