@@ -72,9 +72,18 @@ namespace OpenMuVoter
         /// <returns>True, if vote is successfull, otherwise false.</returns>
         public bool VoteOnWebshop()
         {
-            string url = Properties.Resources.WebshopVote_URL;
+            const string validationMessage = "Already voted! You can win new 25 credits After:";
 
-            return Vote(url, "Already voted! You can win new 25 credits After:");
+            string votingUrl = Properties.Resources.WebshopVote_URL;
+            string checkUrl = Properties.Resources.WebShop_URL;
+
+            HttpWebRequest request = HttpHelper.CreateRequest(checkUrl);
+            string result = HttpHelper.ReadResponse(request);
+
+            if (result.Contains(validationMessage))
+                return false;
+
+            return Vote(votingUrl, validationMessage);
         }
 
         /// <summary>
@@ -121,6 +130,10 @@ namespace OpenMuVoter
             return "no reward this time.";
         }
 
+        /// <summary>
+        /// Gets user's credits count.
+        /// </summary>
+        /// <returns>User's credits count.</returns>
         public int GetCreditsCount()
         {
             string url = Properties.Resources.GetCredits_URL;

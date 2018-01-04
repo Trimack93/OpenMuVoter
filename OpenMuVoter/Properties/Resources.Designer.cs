@@ -102,6 +102,15 @@ namespace OpenMuVoter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://openmu.com/WebShop/.
+        /// </summary>
+        internal static string WebShop_URL {
+            get {
+                return ResourceManager.GetString("WebShop_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://openmu.com/WebShop/core.php?p=reward.
         /// </summary>
         internal static string WebshopReward_URL {

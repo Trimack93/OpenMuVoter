@@ -63,6 +63,9 @@ namespace OpenMuVoter
                 throw new ArgumentException("Wrong username/password.");
         }
 
+        /// <summary>
+        /// Prints how many credits does user have.
+        /// </summary>
         public void PrintCreditsBalance()
         {
             string creditsCount = _bot.GetCreditsCount().ToString();
