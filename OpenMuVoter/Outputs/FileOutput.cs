@@ -46,12 +46,12 @@ namespace OpenMuVoter.Outputs
 
         public string ReadLine()
         {
-            throw new NotSupportedException("Cannot read user input from file.");
+            return "";
         }
 
         public string ReadPassword()
         {
-            throw new NotSupportedException("Cannot read user input from file.");
+            return "";
         }
     }
 }

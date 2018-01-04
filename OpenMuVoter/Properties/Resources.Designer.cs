@@ -61,6 +61,24 @@ namespace OpenMuVoter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://openmu.com/WebShop/core.php?p=log.
+        /// </summary>
+        internal static string GetCredits_URL {
+            get {
+                return ResourceManager.GetString("GetCredits_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://openmu.com/?p=votesys.
+        /// </summary>
+        internal static string Vote_URL {
+            get {
+                return ResourceManager.GetString("Vote_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://openmu.com/?p=votesys&amp;id=20
         ///http://openmu.com/?p=votesys&amp;id=19
         ///http://openmu.com/?p=votesys&amp;id=18

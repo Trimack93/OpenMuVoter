@@ -51,12 +51,25 @@ namespace OpenMuVoter
         {
             if (_bot.Login(_login, _pass))
             {
+                PrintCreditsBalance();
+
                 VoteOnSites();
                 VoteOnWebshop();
                 Claim24hReward();
+
+                PrintCreditsBalance();
             }
             else
                 throw new ArgumentException("Wrong username/password.");
+        }
+
+        public void PrintCreditsBalance()
+        {
+            string creditsCount = _bot.GetCreditsCount().ToString();
+
+            _output.Write(Environment.NewLine + "You have got ");
+            _output.WriteColor(creditsCount, ConsoleColor.Yellow);
+            _output.WriteLine(" credits." + Environment.NewLine);
         }
 
         /// <summary>
@@ -64,10 +77,8 @@ namespace OpenMuVoter
         /// </summary>
         public void Finish()
         {
-            _output.WriteLine("Voting finished successfully!");
-
-            if (_output is ConsoleOutput)
-                _output.ReadLine();
+            _output.Write("Voting finished successfully!");
+            _output.ReadLine();
         }
 
         private void VoteOnSites()

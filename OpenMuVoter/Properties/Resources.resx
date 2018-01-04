@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GetCredits_URL" xml:space="preserve">
+    <value>http://openmu.com/WebShop/core.php?p=log</value>
+  </data>
+  <data name="Vote_URL" xml:space="preserve">
+    <value>http://openmu.com/?p=votesys</value>
+  </data>
   <data name="VotingSites_URLs" xml:space="preserve">
     <value>http://openmu.com/?p=votesys&amp;id=20
 http://openmu.com/?p=votesys&amp;id=19

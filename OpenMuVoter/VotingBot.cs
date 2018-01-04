@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +14,6 @@ namespace OpenMuVoter
     internal class VotingBot
     {
         private const int VOTE_TIMEOUT_MS = 250;
-        private const string VOTE_URL = "http://openmu.com/?p=votesys";
 
         private IList<string> _siteUrls = new List<string>();
 
@@ -40,11 +40,12 @@ namespace OpenMuVoter
         public bool Login(string username, string password)
         {
             string postData = $"username={username}&password={password}&login=Login";
+            string url = Properties.Resources.Vote_URL;
 
             ASCIIEncoding encoding = new ASCIIEncoding();
             byte[] data = encoding.GetBytes(postData);
 
-            HttpWebRequest myRequest = HttpHelper.CreateRequest(VOTE_URL);
+            HttpWebRequest myRequest = HttpHelper.CreateRequest(url);
             myRequest.ContentLength = data.Length;
 
             using (Stream newStream = myRequest.GetRequestStream())
@@ -73,7 +74,7 @@ namespace OpenMuVoter
         {
             string url = Properties.Resources.WebshopVote_URL;
 
-            return !Vote(url, "Already voted! You can win new 25 credits After:");
+            return Vote(url, "Already voted! You can win new 25 credits After:");
         }
 
         /// <summary>
@@ -118,6 +119,22 @@ namespace OpenMuVoter
             }
 
             return "no reward this time.";
+        }
+
+        public int GetCreditsCount()
+        {
+            string url = Properties.Resources.GetCredits_URL;
+
+            HttpWebRequest request = HttpHelper.CreateRequest(url);
+            string serverResponse = HttpHelper.ReadResponse(request);
+
+            Regex regex = new Regex(@"Credits: <span>(\d)+</span>");
+            string creditsAsHtml = regex.Match(serverResponse).Value;
+
+            creditsAsHtml = creditsAsHtml.Replace("Credits: <span>", string.Empty);
+            creditsAsHtml = creditsAsHtml.Replace("</span>", string.Empty);
+
+            return Int32.Parse(creditsAsHtml);
         }
 
         private bool Vote(string url, string validResponse)
