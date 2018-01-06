@@ -74,10 +74,10 @@ namespace OpenMuVoter
         {
             const string validationMessage = "Already voted! You can win new 25 credits After:";
 
+            string validationUrl = Properties.Resources.WebShop_URL;
             string votingUrl = Properties.Resources.WebshopVote_URL;
-            string checkUrl = Properties.Resources.WebShop_URL;
 
-            HttpWebRequest request = HttpHelper.CreateRequest(checkUrl);
+            HttpWebRequest request = HttpHelper.CreateRequest(validationUrl);
             string result = HttpHelper.ReadResponse(request);
 
             if (result.Contains(validationMessage))
@@ -141,11 +141,12 @@ namespace OpenMuVoter
             HttpWebRequest request = HttpHelper.CreateRequest(url);
             string serverResponse = HttpHelper.ReadResponse(request);
 
-            Regex regex = new Regex(@"Credits: <span>(\d)+</span>");
+            Regex regex = new Regex(@"Credits: <span>[\d,]+</span>");
             string creditsAsHtml = regex.Match(serverResponse).Value;
 
             creditsAsHtml = creditsAsHtml.Replace("Credits: <span>", string.Empty);
             creditsAsHtml = creditsAsHtml.Replace("</span>", string.Empty);
+            creditsAsHtml = creditsAsHtml.Replace(",", string.Empty);
 
             return Int32.Parse(creditsAsHtml);
         }
