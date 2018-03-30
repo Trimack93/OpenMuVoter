@@ -10,24 +10,24 @@ namespace OpenMuVoter.Outputs
 {
     class ConsoleOutput : IOutput
     {
-        public void Write(string message)
+        public void Write(object message)
         {
             Console.Write(message);
         }
 
-        public void WriteLine(string message)
+        public void WriteLine(object message)
         {
             Console.WriteLine(message);
         }
 
-        public void WriteColor(string message, ConsoleColor color)
+        public void WriteColor(object message, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(message);
             Console.ResetColor();
         }
 
-        public void WriteLineColor(string message, ConsoleColor color)
+        public void WriteLineColor(object message, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(message);

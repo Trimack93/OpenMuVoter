@@ -14,8 +14,9 @@ namespace OpenMuVoter
         private readonly VotingBot _bot;
         private readonly IOutput _output;
 
-        private string _login;
-        private string _pass;
+        private string _login { get; set; }
+        private string _pass { get; set; }
+        private int _creditsCountBegin { get; set; }
 
         public MainView(IOutput output, VotingBot bot)
         {
@@ -51,28 +52,16 @@ namespace OpenMuVoter
         {
             if (_bot.Login(_login, _pass))
             {
-                PrintCreditsBalance();
+                PrintCreditsBalanceBegin();
 
                 VoteOnSites();
                 VoteOnWebshop();
                 Claim24hReward();
 
-                PrintCreditsBalance();
+                PrintCreditsBalanceEnd();
             }
             else
                 throw new ArgumentException("Wrong username/password.");
-        }
-
-        /// <summary>
-        /// Prints how many credits does user have.
-        /// </summary>
-        public void PrintCreditsBalance()
-        {
-            string creditsCount = _bot.GetCreditsCount().ToString();
-
-            _output.Write(Environment.NewLine + "You have got ");
-            _output.WriteColor(creditsCount, ConsoleColor.Yellow);
-            _output.WriteLine(" credits." + Environment.NewLine);
         }
 
         /// <summary>
@@ -82,6 +71,34 @@ namespace OpenMuVoter
         {
             _output.Write("Voting finished successfully!");
             _output.ReadLine();
+        }
+
+        /// <summary>
+        /// Prints how many credits does user have.
+        /// </summary>
+        private void PrintCreditsBalanceBegin()
+        {
+            _creditsCountBegin = _bot.GetCreditsCount();
+
+            _output.Write(Environment.NewLine + "You have got ");
+            _output.WriteColor(_creditsCountBegin, ConsoleColor.Yellow);
+            _output.WriteLine(" credits." + Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Prints how many credits does user have, in addition calculates the difference between previous and current credits balance.
+        /// </summary>
+        private void PrintCreditsBalanceEnd()
+        {
+            int creditsCountEnd = _bot.GetCreditsCount();
+
+            _output.Write(Environment.NewLine + "You have got ");
+            _output.WriteColor(creditsCountEnd, ConsoleColor.Yellow);
+
+            int difference = creditsCountEnd - _creditsCountBegin;
+            _output.WriteColor($" (+{difference}) ", ConsoleColor.Green);
+
+            _output.WriteLine("credits." + Environment.NewLine);
         }
 
         private void VoteOnSites()

@@ -24,22 +24,22 @@ namespace OpenMuVoter.Outputs
             File.AppendAllText(LogFileName, NewLine + NewLine);
         }
 
-        public void Write(string message)
+        public void Write(object message)
         {
-            File.AppendAllText(LogFileName, message);
+            File.AppendAllText(LogFileName, message.ToString());
         }
 
-        public void WriteLine(string message)
+        public void WriteLine(object message)
         {
             File.AppendAllText(LogFileName, message + Environment.NewLine);
         }
 
-        public void WriteColor(string message, ConsoleColor color)
+        public void WriteColor(object message, ConsoleColor color)
         {
             Write(message);
         }
 
-        public void WriteLineColor(string message, ConsoleColor color)
+        public void WriteLineColor(object message, ConsoleColor color)
         {
             WriteLine(message);
         }

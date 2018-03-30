@@ -8,10 +8,10 @@ namespace OpenMuVoter.Interfaces.Outputs
 {
     interface IOutput
     {
-        void Write(string message);
-        void WriteLine(string message);
-        void WriteColor(string message, ConsoleColor color);
-        void WriteLineColor(string message, ConsoleColor color);
+        void Write(object message);
+        void WriteLine(object message);
+        void WriteColor(object message, ConsoleColor color);
+        void WriteLineColor(object message, ConsoleColor color);
         string ReadLine();
         string ReadPassword();
     }

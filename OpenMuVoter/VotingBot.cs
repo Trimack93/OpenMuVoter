@@ -7,13 +7,12 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace OpenMuVoter
 {
     internal class VotingBot
     {
-        private const int VOTE_TIMEOUT_MS = 250;
+        private const int VOTE_TIMEOUT_MS = 0;
 
         private IList<string> _siteUrls = new List<string>();
 
