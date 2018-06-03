@@ -31,6 +31,17 @@ namespace OpenMuVoter
         }
 
         /// <summary>
+        /// Bypasses CloudFlare security measurements.
+        /// </summary>
+        /// <returns>True, if CloudFlare security was breached.</returns>
+        public bool FuckCloudflare()
+        {
+            string url = Properties.Resources.MainPage_URL;
+
+            return HttpHelper.FuckCloudflare(url);
+        }
+
+        /// <summary>
         /// Login to the site using provided credentials.
         /// </summary>
         /// <param name="username">User login.</param>
@@ -38,19 +49,15 @@ namespace OpenMuVoter
         /// <returns>True, if user logged in successfully, otherwise false.</returns>
         public bool Login(string username, string password)
         {
-            string postData = $"username={username}&password={password}&login=Login";
             string url = Properties.Resources.Vote_URL;
 
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            byte[] data = encoding.GetBytes(postData);
-
-            HttpWebRequest myRequest = HttpHelper.CreateRequest(url);
-            myRequest.ContentLength = data.Length;
-
-            using (Stream newStream = myRequest.GetRequestStream())
-                newStream.Write(data, 0, data.Length);
-
-            string response = HttpHelper.ReadResponse(myRequest);
+            var requestParams = new[]
+            {
+                new KeyValuePair<string, string>("username", $"{username}"),
+                new KeyValuePair<string, string>("password", $"{password}"),
+                new KeyValuePair<string, string>("login", "Login"),
+            };
+            string response = HttpHelper.SendRequestWithParams(url, requestParams);
 
             return !response.Contains("There is no such username or password is wrong");
         }
@@ -75,9 +82,8 @@ namespace OpenMuVoter
 
             string validationUrl = Properties.Resources.WebShop_URL;
             string votingUrl = Properties.Resources.WebshopVote_URL;
-
-            HttpWebRequest request = HttpHelper.CreateRequest(validationUrl);
-            string result = HttpHelper.ReadResponse(request);
+            
+            string result = HttpHelper.SendRequest(validationUrl);
 
             if (result.Contains(validationMessage))
                 return false;
@@ -95,9 +101,8 @@ namespace OpenMuVoter
 
             string baseUrl = Properties.Resources.WebshopReward_URL;
             string testUrl = baseUrl + "&time=" + rng.NextDouble();
-
-            HttpWebRequest request = HttpHelper.CreateRequest(testUrl);
-            string result = HttpHelper.ReadResponse(request);
+            
+            string result = HttpHelper.SendRequest(testUrl);
 
             return result.Contains("Get FREE Reward");
         }
@@ -112,9 +117,8 @@ namespace OpenMuVoter
 
             string baseUrl = Properties.Resources.WebshopReward_URL;
             string getUrl = baseUrl + "&get=true" + "&time=" + rng.NextDouble();
-
-            HttpWebRequest request = HttpHelper.CreateRequest(getUrl);
-            string result = HttpHelper.ReadResponse(request);
+            
+            string result = HttpHelper.SendRequest(getUrl);
 
             int indexBegin = result.IndexOf("You won");
             int indexEnd = result.IndexOf("<img src");
@@ -136,9 +140,7 @@ namespace OpenMuVoter
         public int GetCreditsCount()
         {
             string url = Properties.Resources.GetCredits_URL;
-
-            HttpWebRequest request = HttpHelper.CreateRequest(url);
-            string serverResponse = HttpHelper.ReadResponse(request);
+            string serverResponse = HttpHelper.SendRequest(url);
 
             Regex regex = new Regex(@"Credits: <span>[\d,]+</span>");
             string creditsAsHtml = regex.Match(serverResponse).Value;
@@ -152,8 +154,7 @@ namespace OpenMuVoter
 
         private bool Vote(string url, string validResponse)
         {
-            HttpWebRequest request = HttpHelper.CreateRequest(url);
-            string result = HttpHelper.ReadResponse(request);
+            string result = HttpHelper.SendRequest(url);
 
             Thread.Sleep(VOTE_TIMEOUT_MS);                                     // coby za bota nie uznali xD
 

@@ -70,6 +70,15 @@ namespace OpenMuVoter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://openmu.com/index.php.
+        /// </summary>
+        internal static string MainPage_URL {
+            get {
+                return ResourceManager.GetString("MainPage_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://openmu.com/?p=votesys.
         /// </summary>
         internal static string Vote_URL {

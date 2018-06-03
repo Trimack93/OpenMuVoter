@@ -1,5 +1,4 @@
-﻿using HttpHelpers;
-using OpenMuVoter.Interfaces.Outputs;
+﻿using OpenMuVoter.Interfaces.Outputs;
 using OpenMuVoter.Outputs;
 using OpenMuVoter.Utilities;
 using System;
@@ -34,6 +33,8 @@ namespace OpenMuVoter
                 Logger.LogError(ex.Message);
                 Console.WriteLine(ex.Message);
             }
+
+            programOutput.ReadLine();
         }
 
         /// <summary>

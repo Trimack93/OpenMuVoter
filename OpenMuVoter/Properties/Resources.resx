@@ -152,4 +152,7 @@ http://openmu.com/?p=votesys&amp;id=1</value>
   <data name="WebShop_URL" xml:space="preserve">
     <value>http://openmu.com/WebShop/</value>
   </data>
+  <data name="MainPage_URL" xml:space="preserve">
+    <value>http://openmu.com/index.php</value>
+  </data>
 </root>

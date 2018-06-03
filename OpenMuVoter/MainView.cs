@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenMuVoter.Utilities;
 using OpenMuVoter.Interfaces.Outputs;
-using OpenMuVoter.Outputs;
 
 namespace OpenMuVoter
 {
@@ -50,18 +48,25 @@ namespace OpenMuVoter
         /// </summary>
         public void Vote()
         {
-            if (_bot.Login(_login, _pass))
+            var securityIsHacked = BypassCloudflareProtection();
+
+            if (securityIsHacked)
             {
-                PrintCreditsBalanceBegin();
+                var loginSuccessful = _bot.Login(_login, _pass);
 
-                VoteOnSites();
-                VoteOnWebshop();
-                Claim24hReward();
+                if (loginSuccessful)
+                {
+                    PrintCreditsBalanceBegin();
 
-                PrintCreditsBalanceEnd();
+                    VoteOnSites();
+                    VoteOnWebshop();
+                    Claim24hReward();
+
+                    PrintCreditsBalanceEnd();
+                }
+                else
+                    throw new ArgumentException("Wrong username/password.");
             }
-            else
-                throw new ArgumentException("Wrong username/password.");
         }
 
         /// <summary>
@@ -70,7 +75,25 @@ namespace OpenMuVoter
         public void Finish()
         {
             _output.Write("Voting finished successfully!");
-            _output.ReadLine();
+            //_output.ReadLine();
+        }
+
+        /// <summary>
+        /// Bypasses CloudFlare security measurements.
+        /// </summary>
+        /// <returns>True, if CloudFlare security was breached.</returns>
+        private bool BypassCloudflareProtection()
+        {
+            _output.Write(Environment.NewLine + "Bypassing CloudFlare protection... ");
+
+            var success = _bot.FuckCloudflare();
+
+            if (success)
+                _output.WriteLineColor("done.", ConsoleColor.DarkGreen);
+            else
+                _output.WriteLineColor("error.", ConsoleColor.Red);
+
+            return success;
         }
 
         /// <summary>
